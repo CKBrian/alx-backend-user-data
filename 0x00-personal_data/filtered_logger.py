@@ -18,5 +18,6 @@ def filter_datum(fields: list, redaction: str,
     '''
     # filter out parts to be obfuscaated
     for field in fields:
-        message = re.sub(fr'{field}=[\w/]+', f'{field}={redaction}', message)
+        message = re.sub(fr'{field}=[\w/]+{separator}',
+                         f'{field}={redaction}{separator}', message)
     return message

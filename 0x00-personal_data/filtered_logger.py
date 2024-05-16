@@ -51,7 +51,7 @@ def get_logger() -> logging.Logger:
     # logger and log levels
     logger = logging.getLogger('user_data')
     logger.setLevel(logging.INFO)
-
+    logger.propagate = False
     # stream handler
     formatter = RedactingFormatter([])
     stream_handler = logging.StreamHandler()

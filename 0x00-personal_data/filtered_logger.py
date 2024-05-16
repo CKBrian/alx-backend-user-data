@@ -16,7 +16,6 @@ def filter_datum(fields: list, redaction: str,
             separator (str): a string representing by which character is
                              separating all fields in the log line (message)
     '''
-    # filter out parts to be obfuscaated
     for field in fields:
         message = re.sub(fr'{field}=[^{separator}]+',
                          f'{field}={redaction}', message)

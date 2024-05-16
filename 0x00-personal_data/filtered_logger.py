@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-'''Defines a filtered_logger module with functions'''
+'''Defines a filtered_logger module with functions '''
 import re
 from typing import List
 import logging

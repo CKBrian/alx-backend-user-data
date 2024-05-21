@@ -1,7 +1,7 @@
 api/v1/auth/auth.py
 '''Auth module
 '''
-import request from flask
+from flaskimport request
 
 
 class Auth:

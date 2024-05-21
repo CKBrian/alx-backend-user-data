@@ -6,6 +6,7 @@ from os import getenv
 from api.v1.views import app_views
 from flask import Flask, jsonify, abort, request
 from flask_cors import (CORS, cross_origin)
+from api.v1.auth.auth import Auth
 import os
 
 
@@ -14,7 +15,6 @@ app.register_blueprint(app_views)
 CORS(app, resources={r"/api/v1/*": {"origins": "*"}})
 auth = getenv("AUTH_TYPE", None)
 if auth:
-    from api.v1.auth.auth import Auth
     auth = Auth()
 
 @app.errorhandler(404)
@@ -48,7 +48,7 @@ def before_request():
     ]
     if auth:
         is_excluded = auth.require_auth(request.path, excluded_list)
-        if not is_excluded:
+        if is_excluded:
             auth_header = auth.authorization_header(request)
             if not auth_header:
                 abort(401)

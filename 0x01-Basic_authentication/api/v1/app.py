@@ -52,11 +52,11 @@ def before_request():
     ]
     if auth:
         is_excluded = auth.require_auth(request.path, excluded_list)
-        if is_excluded == False:
+        if is_excluded is False:
             auth_header = auth.authorization_header(request)
-            if auth_header == None:
+            if auth_header is None:
                 abort(401)
-            if auth.current_user(request) == None:
+            if auth.current_user(request) is None:
                 abort(403)
 
 

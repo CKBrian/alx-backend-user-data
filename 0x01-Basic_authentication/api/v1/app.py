@@ -51,10 +51,8 @@ def before_request():
         '/api/v1/forbidden/'
     ]
     if auth:
-        is_excluded = auth.require_auth(request.path, excluded_list)
-        if is_excluded is False:
-            auth_header = auth.authorization_header(request)
-            if auth_header is None:
+        if not auth.require_auth(request.path, excluded_list):
+            if auth.authorization_header(request) is None:
                 abort(401)
             if auth.current_user(request) is None:
                 abort(403)

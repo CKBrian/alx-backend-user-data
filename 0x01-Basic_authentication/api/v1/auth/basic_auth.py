@@ -13,6 +13,6 @@ class BasicAuth(Auth):
         '''returns the Base64 part of the Authorization
         header for a Basic Authentication'''
         header = authorization_header
-        if header and type(header) is 'str' and header.startswith('Basic'):
+        if header and isinstance(header, str) and header.startswith('Basic '):
             return authorization_header[len('Basic '):]
         return None

@@ -39,7 +39,8 @@ class BasicAuth(Auth):
         decoded_auth_header = decoded_base64_authorization_header
         if decoded_auth_header and isinstance(decoded_auth_header, str):
             if ':' in decoded_auth_header:
-                email, passwd = decoded_auth_header.split(':')
+                email = decoded_auth_header.split(':')[0]
+                passwd = decoded_auth_header[(len(email) + 1):]
                 return (email, passwd)
         return None, None
 
@@ -65,5 +66,6 @@ class BasicAuth(Auth):
         decoded_auth_header = self.decode_base64_authorization_header(
                 authorization_header)
         email, passwd = self.extract_user_credentials(decoded_auth_header)
+        print(email, passwd)
         user = self.user_object_from_credentials(email, passwd)
         return user

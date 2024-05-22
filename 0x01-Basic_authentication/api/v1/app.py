@@ -16,9 +16,9 @@ app.register_blueprint(app_views)
 CORS(app, resources={r"/api/v1/*": {"origins": "*"}})
 auth = getenv("AUTH_TYPE", None)
 if auth == 'basic_auth':
-    auth = Auth()
-else:
     auth = BasicAuth()
+else:
+    auth = Auth()
 
 
 @app.errorhandler(404)

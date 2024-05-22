@@ -14,10 +14,10 @@ class Auth:
         '''
         if not path or not excluded_paths:
             return True
-        pattern = r'stat*'
         if path[-1] != '/':
-            is_excluded = [True for item in excluded_paths
-                           if re.match(pattern, item)]
+            is_excluded = [item for item in excluded_paths
+                           if re.match(item, path)]
+            print(is_excluded)
             return (False if is_excluded or path in excluded_paths or
                     f'{path}/' in excluded_paths else True)
         return False if path in excluded_paths else True

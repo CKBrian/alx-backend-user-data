@@ -39,4 +39,4 @@ class BasicAuth(Auth):
             if ':' in decoded_auth_header:
                 email, passwd = decoded_auth_header.split(':')
                 return (email, passwd)
-        return None,None
+        return None, None

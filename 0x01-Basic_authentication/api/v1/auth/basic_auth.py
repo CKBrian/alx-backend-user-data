@@ -14,5 +14,5 @@ class BasicAuth(Auth):
         header for a Basic Authentication'''
         header = authorization_header
         if header and type(header) is 'str' and header.startswith('Basic'):
-            return header.split('Basic ')
+            return authorization_header[len('Basic '):]
         return None

@@ -3,6 +3,7 @@
 '''
 from flask import request
 from typing import List, TypeVar
+import re
 
 
 class Auth:
@@ -13,9 +14,12 @@ class Auth:
         '''
         if not path or not excluded_paths:
             return True
+        pattern = r'stat*'
         if path[-1] != '/':
-            return (False if path in excluded_paths or f'{path}/'
-                    in excluded_paths else True)
+            is_excluded = [True for item in excluded_paths
+                           if re.match(pattern, item)]
+            return (False if is_excluded or path in excluded_paths or
+                    f'{path}/' in excluded_paths else True)
         return False if path in excluded_paths else True
 
     def authorization_header(self, request=None) -> str:

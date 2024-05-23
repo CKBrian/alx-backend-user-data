@@ -4,7 +4,6 @@
 from flask import request, jsonify, make_response
 from api.v1.views import app_views
 from models.user import User
-from api.v1 import auth
 import os
 
 
@@ -35,6 +34,7 @@ def user_authentication():
                  strict_slashes=False)
 def user_sign_out():
     '''Handles user authentication'''
+    from api.v1.app import auth
     status = auth.destroy_session(request)
     if not status:
         abort(404)

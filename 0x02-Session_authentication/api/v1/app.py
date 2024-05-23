@@ -8,6 +8,7 @@ from flask import Flask, jsonify, abort, request
 from flask_cors import (CORS, cross_origin)
 from api.v1.auth.auth import Auth
 from api.v1.auth.basic_auth import BasicAuth
+from api.v1.auth.session_auth import SessionAuth
 import os
 
 
@@ -17,6 +18,8 @@ CORS(app, resources={r"/api/v1/*": {"origins": "*"}})
 auth = getenv("AUTH_TYPE", None)
 if auth == 'basic_auth':
     auth = BasicAuth()
+elif auth == 'session_auth':
+    auth = SessionAuth()
 else:
     auth = Auth()
 
@@ -46,13 +49,16 @@ def forbidden(error) -> str:
 def before_request():
     ''' Before request handler to check authorization '''
     excluded_list = [
+        '/api/v1/auth_session/login/',
         '/api/v1/status/',
         '/api/v1/unauthorized/',
         '/api/v1/forbidden/'
     ]
     if auth:
         if auth.require_auth(request.path, excluded_list):
-            if auth.authorization_header(request) is None:
+            session_cookie = auth.session_cookie(request)
+            auth_header = auth.authorization_header(request)
+            if auth_header is None and not session_cookie:
                 abort(401)
             if auth.current_user(request) is None:
                 abort(403)

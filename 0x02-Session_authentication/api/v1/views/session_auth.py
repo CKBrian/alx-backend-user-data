@@ -4,6 +4,7 @@
 from flask import request, jsonify, make_response
 from api.v1.views import app_views
 from models.user import User
+from api.v1 import auth
 import os
 
 
@@ -28,3 +29,13 @@ def user_authentication():
     session_name = os.getenv('SESSION_NAME')
     resp.set_cookie(session_name, session_id)
     return resp
+
+
+@app_views.route('/auth_session/logout', methods=['DELETE'],
+                 strict_slashes=False)
+def user_sign_out():
+    '''Handles user authentication'''
+    status = auth.destroy_session(request)
+    if not status:
+        abort(404)
+    return jsonify({}), 200

@@ -61,7 +61,9 @@ def logout():
 def profile():
     '''Returns a user profile as json payload'''
     user = AUTH.get_user_from_session_id(session_id)
-    return jsonify({"email": user.email})
+    if user:
+        return jsonify({"email": user.email})
+    abort(403)
 
 
 if __name__ == "__main__":

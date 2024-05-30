@@ -45,7 +45,7 @@ class DB:
         Finds a user by the given keyword arguments.
 
         Args:
-            **kwargs: Keyword arguments representing the columns and their values to filter by.
+            **kwargs: columns and their values to filter by.
 
         Returns:
             User: The user object matching the given keyword arguments.

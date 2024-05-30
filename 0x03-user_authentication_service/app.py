@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 
 '''Defines an app module'''
-from flask import Flask, jsonify, request, abort, make_response
+from flask import (
+        Flask, jsonify, request, abort,
+        make_response, url_for, redirect)
 from auth import Auth
 
 app = Flask('__name__')
@@ -9,7 +11,7 @@ AUTH = Auth()
 
 
 @app.route('/', methods=['GET'])
-def get_user():
+def welcome():
     '''Returns a json payload'''
     return jsonify({"message": "Bienvenue"})
 
@@ -28,7 +30,7 @@ def create_user():
 
 
 @app.route('/sessions', methods=['POST'])
-def get_session():
+def login():
     '''Validates a user and assigns a session_id'''
     email = request.form.get('email')
     password = request.form.get('password')
@@ -41,6 +43,19 @@ def get_session():
         resp.set_cookie('session_id', session_id)
         return resp
     abort(401)
+
+
+@app.route('/sessions', methods=['DELETE'])
+def logout():
+    '''Logs out the current user'''
+    session_id = request.cookies.get('session_id')
+    user = AUTH.get_user_from_session_id(session_id)
+    if user:
+        AUTH.destroy_session(user.id)
+        resp = make_response(redirect(url_for('welcome')))
+        resp.set_cookie('session_id', None)
+        return resp
+    abort(403)
 
 
 if __name__ == "__main__":

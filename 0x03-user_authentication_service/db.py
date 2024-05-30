@@ -70,7 +70,7 @@ class DB:
         """
         try:
             session = self._session
-            user = session.query(User).filter_by(**kwargs).first()
+            user = session.query(User).filter_by(**kwargs).one()
             if not user:
                 raise NoResultFound()
         except (InvalidRequestError, NoResultFound) as e:

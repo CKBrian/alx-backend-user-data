@@ -1,15 +1,18 @@
 #!/usr/bin/env python3
 """DB module
 """
+import logging
+from typing import Dict
+
 from sqlalchemy import create_engine
+from sqlalchemy.exc import InvalidRequestError
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm.exc import NoResultFound
 from sqlalchemy.orm.session import Session
-from sqlalchemy.exc import NoResultFound, InvalidRequestError
-from typing import Dict, Any
-import logging
 
 from user import Base, User
+
 logging.disable(logging.WARNING)
 
 
@@ -35,43 +38,16 @@ class DB:
         return self.__session
 
     def add_user(self, email: str, hashed_password: str) -> User:
+        """Returns:
+            User: A User object representing the new user.
         """
-        Adds a new user to the database.
-
-        Args:
-            email (str): The user's email address.
-            hashed_password (str): The hashed password for the user.
-
-        Returns:
-            User: The newly created user object.
-        """
+        # Create new user
+        new_user = User(email=email, hashed_password=hashed_password)
         try:
-            user = User(email=email, hashed_password=hashed_password)
-            self._session.add(user)
+            self._session.add(new_user)
             self._session.commit()
         except Exception as e:
+            print(f"Error adding user to database: {e}")
             self._session.rollback()
-        return user
-
-    def find_user_by(self, **kwargs: Dict[str, Any]) -> User:
-        """
-        Finds a user by the given keyword arguments.
-
-        Args:
-            **kwargs: columns and their values to filter by.
-
-        Returns:
-            User: The user object matching the given keyword arguments.
-
-        Raises:
-            NoResultFound: If no user is found.
-            InvalidRequestError: If there is an invalid request.
-        """
-        try:
-            session = self._session
-            user = session.query(User).filter_by(**kwargs).first()
-            if not user:
-                raise NoResultFound()
-        except (InvalidRequestError, NoResultFound) as e:
-            raise e
-        return user
+            raise
+        return new_user

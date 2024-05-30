@@ -8,8 +8,8 @@ app = Flask('__name__')
 
 @app.route('/', methods=['GET'])
 def get_user():
-	'''Returns a json payload'''
-	return jsonify({"message": "Bienvenue"})
+    '''Returns a json payload'''
+    return jsonify({"message": "Bienvenue"})
 
 
 if __name__ == "__main__":

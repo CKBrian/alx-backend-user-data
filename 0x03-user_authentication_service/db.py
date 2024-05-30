@@ -69,6 +69,9 @@ class DB:
             InvalidRequestError: If there is an invalid request.
         """
         try:
+            for key, val in kwargs.items():
+                if not hasattr(User, key):
+                    raise InvaldRequestError()
             session = self._session
             user = session.query(User).filter_by(**kwargs).one()
         except (InvalidRequestError, NoResultFound) as e:
@@ -93,7 +96,7 @@ class DB:
             attrs = [column.key for column in inspect(User).columns]
             user = self.find_user_by(id=id)
             for key, val in kwargs.items():
-                if not hasattr(user, key):
+                if not hasattr(User, key):
                     raise ValueError()
                 setattr(user, key, val)
             self._session.commit()

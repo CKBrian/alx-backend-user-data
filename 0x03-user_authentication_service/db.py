@@ -1,16 +1,15 @@
 #!/usr/bin/env python3
 """DB module
 """
-
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm.session import Session
+from sqlalchemy.orm.exc import NoResultFound, InvalidRequestError
+from typing import Dict, Any
+import logging
 
 from user import Base, User
-import logging
-from typing import Dict
-
 logging.disable(logging.WARNING)
 
 
@@ -52,4 +51,27 @@ class DB:
             self._session.commit()
         except Exception as e:
             self._session.rollback()
+        return user
+
+    def find_user_by(self, **kwargs: Dict[str, Any]) -> User:
+        """
+        Finds a user by the given keyword arguments.
+
+        Args:
+            **kwargs: columns and their values to filter by.
+
+        Returns:
+            User: The user object matching the given keyword arguments.
+
+        Raises:
+            NoResultFound: If no user is found.
+            InvalidRequestError: If there is an invalid request.
+        """
+        try:
+            session = self._session
+            user = session.query(User).filter_by(**kwargs).first()
+            if not user:
+                raise NoResultFound()
+        except (InvalidRequestError, NoResultFound) as e:
+            raise e
         return user

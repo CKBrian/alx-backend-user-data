@@ -45,9 +45,12 @@ class DB:
         Returns:
             User: The newly created user object.
         """
-        user = User(email=email, hashed_password=hashed_password)
-        self._session.add(user)
-        self._session.commit()
+        try:
+            user = User(email=email, hashed_password=hashed_password)
+            self._session.add(user)
+            self._session.commit()
+        except Exception as e:
+            self._session.rollback()
         return user
 
     def find_user_by(self, **kwargs: Dict[str, Any]) -> User:

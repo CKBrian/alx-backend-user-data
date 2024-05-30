@@ -57,5 +57,12 @@ def logout():
     abort(403)
 
 
+@app.route('/profile', methods=['GET'])
+def profile():
+    '''Returns a user profile as json payload'''
+    user = AUTH.get_user_from_session_id(session_id)
+    return jsonify({"email": user.email})
+
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port="5000", debug=True)

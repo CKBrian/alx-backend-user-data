@@ -38,7 +38,7 @@ def get_session():
     if session_id:
         resp = make_response(jsonify({"email": "<user email>",
                                       "message": "logged in"}))
-        resp.create_cookies('session_id', session_id)
+        resp.set_cookie('session_id', session_id)
         return resp
     abort(401)
 

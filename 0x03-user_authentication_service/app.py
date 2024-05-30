@@ -34,8 +34,11 @@ def get_session():
     password = request.form.get('password')
     if not AUTH.valid_login(email, password):
         abort(401)
-    if AUTH.create_session(email):
-        return jsonify({"email": "<user email>", "message": "logged in"})
+    session_id = AUTH.create_session(email)
+    if session_id:
+        resp = make_response(return jsonify({"email": "<user email>",
+                                             "message": "logged in"}))
+        resp.create_cookies('session_id', session_id)
     abort(401)
 
 

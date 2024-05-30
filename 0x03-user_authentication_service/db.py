@@ -71,7 +71,7 @@ class DB:
         try:
             for key, val in kwargs.items():
                 if not hasattr(User, key):
-                    raise InvaldRequestError()
+                    raise InvalidRequestError()
             session = self._session
             user = session.query(User).filter_by(**kwargs).one()
         except (InvalidRequestError, NoResultFound) as e:

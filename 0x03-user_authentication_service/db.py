@@ -72,7 +72,7 @@ class DB:
             session = self._session
             user = session.query(User).filter_by(**kwargs).one()
         except InvalidRequestError as e:
-            raise e
+            raise InvalidRequestError()
         except NoResultFound as e:
-            raise e
+            raise NoResultFound()
         return user

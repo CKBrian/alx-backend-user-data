@@ -71,8 +71,6 @@ class DB:
         try:
             session = self._session
             user = session.query(User).filter_by(**kwargs).one()
-        except NoResultFound as e:
-            raise NoResultFound()
-        except InvalidRequestError as e:
-            raise InvalidRequestError()
+        except (InvalidRequestError, NoResultFound) as e:
+            raise e
         return user

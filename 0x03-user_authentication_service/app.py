@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 '''Defines an app module'''
-from flask import Flask, jsonify, request, abort
+from flask import Flask, jsonify, request, abort, make_response
 from auth import Auth
 
 app = Flask('__name__')
@@ -36,9 +36,10 @@ def get_session():
         abort(401)
     session_id = AUTH.create_session(email)
     if session_id:
-        resp = make_response(return jsonify({"email": "<user email>",
-                                             "message": "logged in"}))
+        resp = make_response(jsonify({"email": "<user email>",
+                                      "message": "logged in"}))
         resp.create_cookies('session_id', session_id)
+        return resp
     abort(401)
 
 

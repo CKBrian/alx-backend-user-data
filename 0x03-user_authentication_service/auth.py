@@ -33,7 +33,7 @@ class Auth:
 
     def _generate_uuid(self):
         '''generates a UUID'''
-        return uuid.uuid4()
+        return str(uuid.uuid4())
 
 
 def _hash_password(password: str) -> bytes:

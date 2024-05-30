@@ -4,6 +4,7 @@
 
 import bcrypt
 from db import DB, NoResultFound, User
+import uuid
 
 
 class Auth:
@@ -29,6 +30,10 @@ class Auth:
             return bcrypt.checkpw(password.encode(), user.hashed_password)
         except NoResultFound:
             return False
+
+    def _generate_uuid(self):
+        '''generates a UUID'''
+        return uuid.uuid4()
 
 
 def _hash_password(password: str) -> bytes:

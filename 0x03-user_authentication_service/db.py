@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """DB module
 """
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, inspect
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm.session import Session
@@ -90,10 +90,13 @@ class DB:
             InvalidRequestError: If there is an invalid request.
         """
         try:
+            attrs = [column.key for column in inspect(User).columns]
             user = self.find_user_by(id=id)
             for key, val in kwargs.items():
+                if not hasattr(user, key):
+                    raise ValueError()
                 setattr(user, key, val)
             self._session.commit()
         except ValueError as e:
             self._session.rollback()
-            raise ValueError()
+            raise e

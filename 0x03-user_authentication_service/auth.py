@@ -64,8 +64,9 @@ class Auth:
 
     def get_reset_password_token(self, email: str) -> str:
         '''Resets a password'''
-        user = self._db.find_user_by(email=email)
-        if not user:
+        try:
+            user = self._db.find_user_by(email=email)
+        except NoResultFound:
             raise ValueError()
         user_id = user.id
         reset_token = _generate_uuid()

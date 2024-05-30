@@ -45,19 +45,9 @@ class DB:
         Returns:
             User: The newly created user object.
         """
-        # Create a new session
-        session = self._session
-
-        # Create a new User object with the given email and hashed password
         user = User(email=email, hashed_password=hashed_password)
-
-        # Add the new user to the session
-        session.add(user)
-
-        # Commit the changes to the database
-        session.commit()
-
-        # Return the newly created user object
+        self._session.add(user)
+        self._session.commit()
         return user
 
     def find_user_by(self, **kwargs: Dict[str, Any]) -> User:

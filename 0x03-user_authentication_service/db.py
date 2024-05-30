@@ -74,3 +74,28 @@ class DB:
         except (InvalidRequestError, NoResultFound) as e:
             raise e
         return user
+
+    def update_user(self, id: str, **kwargs: Dict[str, Any]) -> None:
+        """
+        Updates a user by the given keyword arguments.
+
+        Args:
+            **kwargs: columns and their values to filter by.
+
+        Returns:
+            User: The user object matching the given keyword arguments.
+
+        Raises:
+            NoResultFound: If no user is found.
+            InvalidRequestError: If there is an invalid request.
+        """
+        try:
+            user = self.find_user_by(id=id)
+            for key, val in kwargs.items():
+                setattr(user, key, val)
+            self._session.commit()
+        except ValueError as e:
+            self._session.rollback()
+            raise ValueError()
+        except (InvalidRequestError, NoResultFound) as e:
+            raise e

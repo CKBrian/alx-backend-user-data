@@ -11,6 +11,7 @@ import logging
 from user import Base, User
 logging.disable(logging.WARNING)
 
+
 class DB:
     """DB class
     """

@@ -97,5 +97,3 @@ class DB:
         except ValueError as e:
             self._session.rollback()
             raise ValueError()
-        except (InvalidRequestError, NoResultFound) as e:
-            raise e

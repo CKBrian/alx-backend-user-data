@@ -69,7 +69,17 @@ def profile():
 
 @app.route('/reset_password', methods=['POST'])
 def get_reset_password_token():
-    try:
+    """
+    Endpoint to generate a reset password token for a user.
+
+        Parameters:
+    None
+
+    Returns:
+    -  a JSON response with the user's email and the reset token on success.
+    -  a 403 Forbidden response on failure.
+
+    """
         email = request.form.get('email')
         reset_token = AUTH.get_reset_password_token(email)
         return jsonify({"email": email, "reset_token": reset_token})

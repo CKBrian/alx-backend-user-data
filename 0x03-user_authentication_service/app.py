@@ -80,6 +80,7 @@ def get_reset_password_token():
     -  a 403 Forbidden response on failure.
 
     """
+    try:
         email = request.form.get('email')
         reset_token = AUTH.get_reset_password_token(email)
         return jsonify({"email": email, "reset_token": reset_token})

@@ -78,7 +78,7 @@ class DB:
             raise e
         return user
 
-    def update_user(self, id: int, **kwargs: Dict[str, Any]) -> None:
+    def update_user(self, user_id: int, **kwargs: Dict[str, Any]) -> None:
         """
         Updates a user by the given keyword arguments.
 
@@ -94,7 +94,7 @@ class DB:
         """
         try:
             attrs = [column.key for column in inspect(User).columns]
-            user = self.find_user_by(id=id)
+            user = self.find_user_by(id=user_id)
             for key, val in kwargs.items():
                 if not hasattr(User, key):
                     raise ValueError()

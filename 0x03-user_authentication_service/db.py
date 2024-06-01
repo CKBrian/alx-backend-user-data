@@ -78,7 +78,7 @@ class DB:
             raise e
         return user
 
-    def update_user(self, user_id: int, **kwargs: Dict[str, Any]) -> None:
+    def update_user(self, user_id: int, **kwargs) -> None:
         """
         Updates a user by the given keyword arguments.
 

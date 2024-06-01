@@ -54,7 +54,7 @@ class DB:
             self._session.rollback()
         return user
 
-    def find_user_by(self, **kwargs: Dict[str, Any]) -> User:
+    def find_user_by(self, **kwargs) -> User:
         """
         Finds a user by the given keyword arguments.
 

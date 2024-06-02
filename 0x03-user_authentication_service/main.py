@@ -16,6 +16,7 @@ def register_user(email: str, password: str) -> None:
     resp = requests.post(url, data=data)
     assert resp.status_code == 200
 
+
 def log_in_wrong_password(email: str, password: str) -> None:
     """Validates a user"""
     data = {'email': email, 'password': password}
@@ -46,7 +47,6 @@ def profile_logged(session_id: str) -> None:
     cookies = {'session_id': session_id}
     resp = requests.get(url, cookies=cookies)
     assert resp.status_code == 200
-
 
 
 def log_out(session_id: str) -> None:
@@ -96,4 +96,3 @@ if __name__ == "__main__":
     reset_token = reset_password_token(EMAIL)
     update_password(EMAIL, reset_token, NEW_PASSWD)
     log_in(EMAIL, NEW_PASSWD)
-

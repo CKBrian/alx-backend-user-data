@@ -23,7 +23,7 @@ def create_user():
         email = request.form.get('email')
         password = request.form.get('password')
         AUTH.register_user(email, password)
-        return jsonify({"email": "<registered email>",
+        return jsonify({"email": email,
                         "message": "user created"})
     except ValueError:
         return jsonify({"message": "email already registered"}), 400
@@ -38,7 +38,7 @@ def login():
         abort(401)
     session_id = AUTH.create_session(email)
     if session_id:
-        resp = make_response(jsonify({"email": "<user email>",
+        resp = make_response(jsonify({"email": email,
                                       "message": "logged in"}))
         resp.set_cookie('session_id', session_id)
         return resp
